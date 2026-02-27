@@ -421,16 +421,28 @@ function WishesSection() {
 }
 
 // ── Галерея ───────────────────────────────────────────────────────────────────
-const GALLERY_PLACEHOLDERS = [
-  { label: "Фото 1", emoji: "📸" },
-  { label: "Фото 2", emoji: "🌸" },
-  { label: "Фото 3", emoji: "✨" },
-  { label: "Фото 4", emoji: "🎉" },
-  { label: "Фото 5", emoji: "💫" },
-  { label: "Фото 6", emoji: "🦋" },
+const GALLERY_PHOTOS = [
+  {
+    url: "https://cdn.poehali.dev/projects/ad1a8229-c564-4b74-b4ec-3c75088d2a7d/bucket/4673180e-1ed2-4a81-9209-314a1e941c93.jpg",
+    caption: "Вечер 🎉",
+  },
+  {
+    url: "https://cdn.poehali.dev/projects/ad1a8229-c564-4b74-b4ec-3c75088d2a7d/bucket/e1139c11-8664-43fa-be5e-e2382e2ad50a.jpg",
+    caption: "Ночная прогулка 🌙",
+  },
+  {
+    url: "https://cdn.poehali.dev/projects/ad1a8229-c564-4b74-b4ec-3c75088d2a7d/bucket/bbfa3b07-144f-4b4a-9af0-f204b8357f8f.jpg",
+    caption: "Зима ❄️",
+  },
+  {
+    url: "https://cdn.poehali.dev/projects/ad1a8229-c564-4b74-b4ec-3c75088d2a7d/bucket/8d887bbf-01a3-49fa-8e3f-dd09e841d1ff.jpg",
+    caption: "Лето у озера ☀️",
+  },
+  {
+    url: "https://cdn.poehali.dev/projects/ad1a8229-c564-4b74-b4ec-3c75088d2a7d/bucket/e686d990-d3ed-4e33-94b0-bc67f82aa2a2.jpg",
+    caption: "Девчонки 💕",
+  },
 ];
-
-const GALLERY_COLORS = ["#FF4DAF", "#BF5AF2", "#B89000", "#D4521A", "#007EA8", "#009955"];
 
 function GallerySection() {
   const [selected, setSelected] = useState<number | null>(null);
@@ -444,39 +456,40 @@ function GallerySection() {
             Галерея
           </h2>
           <p className="font-caveat text-xl text-gray-500 mt-2">
-            Добавьте ваши фотографии — здесь будут самые тёплые воспоминания
+            Лучшие моменты с нашей Катей 💕
           </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {GALLERY_PLACEHOLDERS.map((ph, i) => (
+          {GALLERY_PHOTOS.map((photo, i) => (
             <div
               key={i}
               onClick={() => setSelected(i)}
               className="relative rounded-3xl overflow-hidden cursor-pointer group"
               style={{
                 aspectRatio: "1",
-                background: `linear-gradient(135deg, ${GALLERY_COLORS[i]}30, ${GALLERY_COLORS[(i + 2) % 6]}30)`,
-                border: `3px solid ${GALLERY_COLORS[i]}`,
+                border: "3px solid rgba(191,90,242,0.4)",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = "scale(1.05)";
-                (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px ${GALLERY_COLORS[i]}40`;
+                (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 40px rgba(255,77,175,0.35)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = "scale(1)";
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="text-5xl mb-2 transition-transform duration-300 group-hover:scale-125">
-                  {ph.emoji}
-                </div>
-                <p className="font-caveat text-lg font-bold" style={{ color: GALLERY_COLORS[i] }}>
-                  {ph.label}
-                </p>
-                <p className="font-rubik text-xs text-gray-400 mt-1">Нажмите для просмотра</p>
+              <img
+                src={photo.url}
+                alt={photo.caption}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: "linear-gradient(transparent 40%, rgba(0,0,0,0.55))" }}
+              >
+                <p className="font-caveat text-white font-bold text-xl drop-shadow">{photo.caption}</p>
               </div>
             </div>
           ))}
@@ -484,30 +497,31 @@ function GallerySection() {
 
         {selected !== null && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50"
-            style={{ background: "rgba(0,0,0,0.8)" }}
+            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            style={{ background: "rgba(0,0,0,0.88)" }}
             onClick={() => setSelected(null)}
           >
             <div
-              className="rounded-3xl p-12 text-center animate-pop-in"
-              style={{
-                background: `linear-gradient(135deg, ${GALLERY_COLORS[selected]}30, white)`,
-                border: `4px solid ${GALLERY_COLORS[selected]}`,
-                maxWidth: 400,
-              }}
+              className="relative rounded-3xl overflow-hidden animate-pop-in"
+              style={{ maxWidth: 560, width: "100%", boxShadow: "0 0 60px rgba(255,77,175,0.4)" }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="text-8xl mb-4">{GALLERY_PLACEHOLDERS[selected].emoji}</div>
-              <p className="font-pacifico text-2xl" style={{ color: GALLERY_COLORS[selected] }}>
-                {GALLERY_PLACEHOLDERS[selected].label}
-              </p>
-              <p className="font-rubik text-gray-500 mt-2 text-sm">Здесь будет ваше фото</p>
+              <img
+                src={GALLERY_PHOTOS[selected].url}
+                alt={GALLERY_PHOTOS[selected].caption}
+                className="w-full"
+                style={{ borderRadius: "24px" }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-5 text-center"
+                style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.6))" }}>
+                <p className="font-caveat text-white text-2xl font-bold">{GALLERY_PHOTOS[selected].caption}</p>
+              </div>
               <button
                 onClick={() => setSelected(null)}
-                className="mt-6 font-rubik font-bold text-white px-6 py-2 rounded-full transition-transform hover:scale-105"
-                style={{ background: GALLERY_COLORS[selected] }}
+                className="absolute top-3 right-3 font-rubik font-bold text-white w-9 h-9 rounded-full flex items-center justify-center text-lg"
+                style={{ background: "rgba(0,0,0,0.5)" }}
               >
-                Закрыть
+                ✕
               </button>
             </div>
           </div>
